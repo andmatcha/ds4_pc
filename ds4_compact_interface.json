@@ -1,0 +1,139 @@
+{
+  "interface_name": "DS4_COMPACT_V1",
+  "report_length": 8,
+  "bit_order": "lsb0",
+  "fields": [
+    {
+      "name": "up",
+      "type": "button",
+      "byte": 0,
+      "bit": 0
+    },
+    {
+      "name": "right",
+      "type": "button",
+      "byte": 0,
+      "bit": 1
+    },
+    {
+      "name": "down",
+      "type": "button",
+      "byte": 0,
+      "bit": 2
+    },
+    {
+      "name": "left",
+      "type": "button",
+      "byte": 0,
+      "bit": 3
+    },
+    {
+      "name": "square",
+      "type": "button",
+      "byte": 0,
+      "bit": 4
+    },
+    {
+      "name": "cross",
+      "type": "button",
+      "byte": 0,
+      "bit": 5
+    },
+    {
+      "name": "circle",
+      "type": "button",
+      "byte": 0,
+      "bit": 6
+    },
+    {
+      "name": "triangle",
+      "type": "button",
+      "byte": 0,
+      "bit": 7
+    },
+    {
+      "name": "l1",
+      "type": "button",
+      "byte": 1,
+      "bit": 0
+    },
+    {
+      "name": "r1",
+      "type": "button",
+      "byte": 1,
+      "bit": 1
+    },
+    {
+      "name": "share",
+      "type": "button",
+      "byte": 1,
+      "bit": 2
+    },
+    {
+      "name": "options",
+      "type": "button",
+      "byte": 1,
+      "bit": 3
+    },
+    {
+      "name": "l3",
+      "type": "button",
+      "byte": 1,
+      "bit": 4
+    },
+    {
+      "name": "r3",
+      "type": "button",
+      "byte": 1,
+      "bit": 5
+    },
+    {
+      "name": "ps",
+      "type": "button",
+      "byte": 1,
+      "bit": 6
+    },
+    {
+      "name": "trackpad_click",
+      "type": "button",
+      "byte": 1,
+      "bit": 7
+    },
+    {
+      "name": "lx",
+      "type": "axis",
+      "byte": 2,
+      "size_bits": 8
+    },
+    {
+      "name": "ly",
+      "type": "axis",
+      "byte": 3,
+      "size_bits": 8
+    },
+    {
+      "name": "rx",
+      "type": "axis",
+      "byte": 4,
+      "size_bits": 8
+    },
+    {
+      "name": "ry",
+      "type": "axis",
+      "byte": 5,
+      "size_bits": 8
+    },
+    {
+      "name": "l2",
+      "type": "axis",
+      "byte": 6,
+      "size_bits": 8
+    },
+    {
+      "name": "r2",
+      "type": "axis",
+      "byte": 7,
+      "size_bits": 8
+    }
+  ]
+}

@@ -6,6 +6,7 @@ import time
 from pathlib import Path
 from typing import Iterable
 
+from .compact_interface import load_compact_interface, pack_mapped_report
 from .hid_reader import (
     enumerate_ds4_devices,
     format_device_info,
@@ -62,6 +63,16 @@ def build_parser() -> argparse.ArgumentParser:
         default="ds4_map.json",
         help="Path to the JSON report map used with --mapped.",
     )
+    dump_parser.add_argument(
+        "--compact",
+        action="store_true",
+        help="Print the mapped report packed into a compact 8-byte interface.",
+    )
+    dump_parser.add_argument(
+        "--interface-file",
+        default="ds4_compact_interface.json",
+        help="Path to the compact interface definition used with --compact.",
+    )
     return parser
 
 
@@ -80,6 +91,8 @@ def main(argv: Iterable[str] | None = None) -> int:
                 args.show_all,
                 args.mapped,
                 args.map_file,
+                args.compact,
+                args.interface_file,
             )
         parser.error(f"Unknown command: {args.command}")
     except KeyboardInterrupt:
@@ -110,6 +123,8 @@ def cmd_dump(
     show_all: bool,
     mapped: bool,
     map_file: str,
+    compact: bool,
+    interface_file: str,
 ) -> int:
     devices = enumerate_ds4_devices()
     if not devices:
@@ -121,7 +136,8 @@ def cmd_dump(
 
     device_info = devices[device_index]
     device = open_device(device_info)
-    report_map = load_report_map(map_file) if mapped else None
+    report_map = load_report_map(map_file) if mapped or compact else None
+    compact_interface = load_compact_interface(interface_file) if compact else None
     previous_payload = None
     try:
         print(to_json_line({"device": format_device_info(device_info)}))
@@ -134,15 +150,31 @@ def cmd_dump(
                     }
                 )
             )
+        if compact:
+            print(
+                to_json_line(
+                    {
+                        "compact_interface": str(Path(interface_file).resolve()),
+                        "interface_name": compact_interface["interface_name"],
+                        "mode": "compact",
+                    }
+                )
+            )
         print("Press controller inputs. Hit Ctrl+C to stop.")
         while True:
             report = device.read(report_size)
             if report:
-                payload = (
-                    map_report(report, report_map)
-                    if report_map is not None
-                    else format_report(report)
-                )
+                if compact_interface is not None and report_map is not None:
+                    mapped_payload = map_report(report, report_map)
+                    packed_report = pack_mapped_report(mapped_payload, compact_interface)
+                    payload = {
+                        "interface": compact_interface["interface_name"],
+                        **format_report(packed_report),
+                    }
+                elif report_map is not None:
+                    payload = map_report(report, report_map)
+                else:
+                    payload = format_report(report)
                 if show_all or payload != previous_payload:
                     print(to_json_line(payload))
                     previous_payload = payload

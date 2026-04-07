@@ -50,6 +50,12 @@ ds4-pc dump --device-index 0
 ds4-pc dump --device-index 0 --show-all
 ```
 
+マッピング済み辞書からさらに 8 バイトの独自インターフェースへ詰めた出力を見たいときは次を使います。
+
+```bash
+ds4-pc dump --device-index 0 --compact --map-file ds4_map.json --interface-file ds4_compact_interface.json
+```
+
 手動でマッピング表を作る場合のひな型は [examples/ds4-hid-report-template.toml](/Users/jinaoyagi/workspace/personal/ds4_pc/examples/ds4-hid-report-template.toml) に置いてあります。`[[bindings]]` ごとに `byte` `mask` `values/threshold` `key` を持つので、そのまま機械処理しやすい形です。
 
 ## 補足
