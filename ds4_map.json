@@ -1,0 +1,160 @@
+{
+  "report_name": "DUALSHOCK4_10BYTE",
+  "report_length": 10,
+  "fields": [
+    {
+      "name": "report_id",
+      "type": "constant",
+      "byte": 0,
+      "value": 1
+    },
+    {
+      "name": "lx",
+      "type": "axis",
+      "byte": 1,
+      "size_bits": 8,
+      "min": 0,
+      "max": 255,
+      "center": 128
+    },
+    {
+      "name": "ly",
+      "type": "axis",
+      "byte": 2,
+      "size_bits": 8,
+      "min": 0,
+      "max": 255,
+      "center": 128
+    },
+    {
+      "name": "rx",
+      "type": "axis",
+      "byte": 3,
+      "size_bits": 8,
+      "min": 0,
+      "max": 255,
+      "default": 128
+    },
+    {
+      "name": "ry",
+      "type": "axis",
+      "byte": 4,
+      "size_bits": 8,
+      "min": 0,
+      "max": 255,
+      "default": 128
+    },
+    {
+      "name": "dpad",
+      "type": "enum",
+      "byte": 5,
+      "mask": "0x0F",
+      "values": {
+        "0": "up",
+        "1": "up_right",
+        "2": "right",
+        "3": "down_right",
+        "4": "down",
+        "5": "down_left",
+        "6": "left",
+        "7": "up_left",
+        "8": "neutral"
+      }
+    },
+    {
+      "name": "square",
+      "type": "button",
+      "byte": 5,
+      "mask": "0x10",
+      "pressed_value": 16
+    },
+    {
+      "name": "cross",
+      "type": "button",
+      "byte": 5,
+      "mask": "0x20",
+      "pressed_value": 32
+    },
+    {
+      "name": "circle",
+      "type": "button",
+      "byte": 5,
+      "mask": "0x40",
+      "pressed_value": 64
+    },
+    {
+      "name": "triangle",
+      "type": "button",
+      "byte": 5,
+      "mask": "0x80",
+      "pressed_value": 128
+    },
+    {
+      "name": "l1",
+      "type": "button",
+      "byte": 6,
+      "mask": "0x01",
+      "pressed_value": 1
+    },
+    {
+      "name": "r1",
+      "type": "button",
+      "byte": 6,
+      "mask": "0x02",
+      "pressed_value": 2
+    },
+    {
+      "name": "share",
+      "type": "button",
+      "byte": 6,
+      "mask": "0x10",
+      "pressed_value": 16
+    },
+    {
+      "name": "options",
+      "type": "button",
+      "byte": 6,
+      "mask": "0x20",
+      "pressed_value": 32
+    },
+    {
+      "name": "l3",
+      "type": "button",
+      "byte": 6,
+      "mask": "0x40",
+      "pressed_value": 64
+    },
+    {
+      "name": "r3",
+      "type": "button",
+      "byte": 6,
+      "mask": "0x80",
+      "pressed_value": 128
+    },
+    {
+      "name": "trackpad_click",
+      "type": "button",
+      "byte": 7,
+      "mask": "0x02",
+      "pressed_value": 2
+    },
+    {
+      "name": "l2",
+      "type": "axis",
+      "byte": 8,
+      "size_bits": 8,
+      "min": 0,
+      "max": 255,
+      "default": 0
+    },
+    {
+      "name": "r2",
+      "type": "axis",
+      "byte": 9,
+      "size_bits": 8,
+      "min": 0,
+      "max": 255,
+      "default": 0
+    }
+  ]
+}
