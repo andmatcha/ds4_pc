@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ds4-pc"
+version = "0.1.0"
+description = "Read raw HID input reports from a DUALSHOCK 4 controller."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "hidapi>=0.14.0",
+]
+
+[project.scripts]
+ds4-pc = "ds4_pc.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
