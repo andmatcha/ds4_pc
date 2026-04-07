@@ -48,8 +48,12 @@ class Ds4MapTests(unittest.TestCase):
         self.assertEqual(fields["r3"]["pressed_value"], 128)
 
     def test_trackpad_click_uses_byte_seven(self) -> None:
-        trackpad_click = _load_fields()["trackpad_click"]
+        fields = _load_fields()
 
+        self.assertEqual(fields["ps"]["byte"], 7)
+        self.assertEqual(fields["ps"]["mask"], "0x01")
+        self.assertEqual(fields["ps"]["pressed_value"], 1)
+        trackpad_click = fields["trackpad_click"]
         self.assertEqual(trackpad_click["byte"], 7)
         self.assertEqual(trackpad_click["mask"], "0x02")
         self.assertEqual(trackpad_click["pressed_value"], 2)

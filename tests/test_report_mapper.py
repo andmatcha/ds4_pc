@@ -35,6 +35,7 @@ class ReportMapperTests(unittest.TestCase):
                 "options": False,
                 "l3": True,
                 "r3": False,
+                "ps": False,
                 "trackpad_click": True,
                 "l2": 255,
                 "r2": 64,
@@ -43,11 +44,13 @@ class ReportMapperTests(unittest.TestCase):
 
     def test_map_report_keeps_dpad_false_when_neutral(self) -> None:
         report_map = load_report_map(MAP_PATH)
-        report = [0x11, 128, 128, 128, 128, 24, 0x00, 0x00, 0, 0]
+        report = [0x11, 128, 128, 128, 128, 24, 0x00, 0x01, 0, 0]
 
         payload = map_report(report, report_map)
 
         self.assertTrue(payload["square"])
+        self.assertTrue(payload["ps"])
+        self.assertFalse(payload["trackpad_click"])
         self.assertFalse(payload["up"])
         self.assertFalse(payload["right"])
         self.assertFalse(payload["down"])

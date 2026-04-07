@@ -132,6 +132,13 @@
       "pressed_value": 128
     },
     {
+      "name": "ps",
+      "type": "button",
+      "byte": 7,
+      "mask": "0x01",
+      "pressed_value": 1
+    },
+    {
       "name": "trackpad_click",
       "type": "button",
       "byte": 7,
