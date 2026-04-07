@@ -2,9 +2,12 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
-from typing import Any, Dict, Iterable, List, Sequence
+from typing import Any, Dict, List, Sequence
 
-import hid
+try:
+    import hid
+except ModuleNotFoundError:  # pragma: no cover - depends on local environment
+    hid = None
 
 
 DEFAULT_VENDOR_ID = 0x054C
@@ -28,6 +31,7 @@ class HidDeviceInfo:
 
 
 def enumerate_ds4_devices() -> List[HidDeviceInfo]:
+    _require_hid()
     devices: List[HidDeviceInfo] = []
     for raw in hid.enumerate():
         if int(raw.get("vendor_id", -1)) != DEFAULT_VENDOR_ID:
@@ -43,6 +47,7 @@ def enumerate_ds4_devices() -> List[HidDeviceInfo]:
 
 
 def open_device(device_info: HidDeviceInfo) -> Any:
+    _require_hid()
     device = hid.device()
     path = device_info.path
     raw_path = path if isinstance(path, bytes) else path.encode("utf-8")
@@ -107,3 +112,8 @@ def _path_to_text(path: bytes | str) -> str:
     if isinstance(path, bytes):
         return path.decode("utf-8", errors="replace")
     return path
+
+
+def _require_hid() -> None:
+    if hid is None:
+        raise RuntimeError("hidapi is not installed. Run `uv sync` before using device access.")

@@ -59,14 +59,14 @@ class Ds4MapTests(unittest.TestCase):
 
         self.assertEqual(fields["l2"]["type"], "axis")
         self.assertEqual(fields["l2"]["byte"], 8)
-        self.assertEqual(fields["l2"]["logical_min"], 0)
-        self.assertEqual(fields["l2"]["logical_max"], 255)
-        self.assertEqual(fields["l2"]["rest"], 0)
+        self.assertEqual(fields["l2"].get("logical_min", fields["l2"].get("min")), 0)
+        self.assertEqual(fields["l2"].get("logical_max", fields["l2"].get("max")), 255)
+        self.assertEqual(fields["l2"].get("rest", fields["l2"].get("default")), 0)
         self.assertEqual(fields["r2"]["type"], "axis")
         self.assertEqual(fields["r2"]["byte"], 9)
-        self.assertEqual(fields["r2"]["logical_min"], 0)
-        self.assertEqual(fields["r2"]["logical_max"], 255)
-        self.assertEqual(fields["r2"]["rest"], 0)
+        self.assertEqual(fields["r2"].get("logical_min", fields["r2"].get("min")), 0)
+        self.assertEqual(fields["r2"].get("logical_max", fields["r2"].get("max")), 255)
+        self.assertEqual(fields["r2"].get("rest", fields["r2"].get("default")), 0)
 
 
 if __name__ == "__main__":

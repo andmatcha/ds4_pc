@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import sys
 import time
+from pathlib import Path
 from typing import Iterable
 
 from .hid_reader import (
@@ -12,6 +13,7 @@ from .hid_reader import (
     open_device,
     to_json_line,
 )
+from .report_mapper import load_report_map, map_report
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -50,6 +52,16 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Print repeated identical reports too.",
     )
+    dump_parser.add_argument(
+        "--mapped",
+        action="store_true",
+        help="Print a mapped button/axis dictionary using a JSON report map.",
+    )
+    dump_parser.add_argument(
+        "--map-file",
+        default="ds4_map.json",
+        help="Path to the JSON report map used with --mapped.",
+    )
     return parser
 
 
@@ -66,6 +78,8 @@ def main(argv: Iterable[str] | None = None) -> int:
                 args.report_size,
                 args.poll_interval_ms,
                 args.show_all,
+                args.mapped,
+                args.map_file,
             )
         parser.error(f"Unknown command: {args.command}")
     except KeyboardInterrupt:
@@ -94,6 +108,8 @@ def cmd_dump(
     report_size: int,
     poll_interval_ms: int,
     show_all: bool,
+    mapped: bool,
+    map_file: str,
 ) -> int:
     devices = enumerate_ds4_devices()
     if not devices:
@@ -105,17 +121,31 @@ def cmd_dump(
 
     device_info = devices[device_index]
     device = open_device(device_info)
-    previous_report = None
+    report_map = load_report_map(map_file) if mapped else None
+    previous_payload = None
     try:
         print(to_json_line({"device": format_device_info(device_info)}))
+        if mapped:
+            print(
+                to_json_line(
+                    {
+                        "report_map": str(Path(map_file).resolve()),
+                        "mode": "mapped",
+                    }
+                )
+            )
         print("Press controller inputs. Hit Ctrl+C to stop.")
         while True:
             report = device.read(report_size)
             if report:
-                current_report = tuple(report)
-                if show_all or current_report != previous_report:
-                    print(to_json_line(format_report(report)))
-                    previous_report = current_report
+                payload = (
+                    map_report(report, report_map)
+                    if report_map is not None
+                    else format_report(report)
+                )
+                if show_all or payload != previous_payload:
+                    print(to_json_line(payload))
+                    previous_payload = payload
             time.sleep(poll_interval_ms / 1000)
     finally:
         device.close()
